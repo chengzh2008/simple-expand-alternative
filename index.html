@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="simple-expand.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+//            var expanders = $('.expander');
+//            console.log(expanders);
+//            expanders.simpleexpand();
+
+        });
+    </script>
+    <link rel="stylesheet" href="main.css">
+    <title></title>
+</head>
+<body>
+<main>
+
+    <div class="large-12 requestbottom">
+        <div class="tab-wrap expander" data-expander-target="#tab1">
+            <span class="likes">Status</span>
+            <span class="alert">!</span>
+        </div>
+
+        <div class="tab-wrap expander" data-expander-target="#tab2">
+            <span class="comment">5 Messages</span>
+            <span class="alert">!</span>
+        </div>
+
+        <div class="tab-wrap">
+            <span class="coins">10 Credits</span>
+        </div>
+
+        <div id="tab1" class="white-font expansible">
+            <div class="small-12">
+                <div class="large-12 columns">
+                    <div class="small-12 white-font">
+                        <h4>Thing (2)</h4>
+                        <ul>
+                            <li>Thing</li>
+                            <li>Thing</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="large-12 columns">
+                    <div class="small-12 white-font">
+                        <h4>Pending Approvals (2)</h4>
+                        <ul ng-show="waitingForApprovals.length">
+                            <li>Approval 1</li>
+                            <li>Approval 2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tab2" class="comt-content expansible">
+            <h4>Comments</h4>
+            <ul class="comment-block">
+                <li>comment1</li>
+                <li>comment2</li>
+                <li>comment3</li>
+            </ul>
+            <div class="small-12">
+                <form class="comment-frm">
+                    <label>
+                        <textarea placeholder="Add Comment..." class="descp-text"></textarea>
+                    </label>
+
+                    <div class="frm-bts">
+                        <input class="small button flnone" ng-click="addComment()" type="button" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript">
+    $(function () {
+        var requestbottom = $('.requestbottom');
+        var expansible = $('.expansible');
+        var expanderElements = $('.expander');
+        expansible.hide();
+        var expanderFilter = function(elem) { return elem.classList && elem.classList.contains("expander"); };
+        var expanderHandler = function(e) {
+            var expanderElement = e.delegateTarget;
+            for(var i = 0; i< expanderElements.length; i++) {
+                var el = expanderElements[i];
+                if (el !== expanderElement) {
+                    el.classList.remove('expanded');
+                    $(el.dataset.expanderTarget).hide();
+                }
+            }
+
+            if(!expanderElement.classList.contains('expanded')) {
+                expanderElement.classList.add('expanded');
+                $(expanderElement.dataset.expanderTarget).show();
+            } else {
+                expanderElement.classList.remove('expanded');
+                $(expanderElement.dataset.expanderTarget).hide();
+            }
+            console.log(expanderElement.dataset.expanderTarget);
+        };
+        var delegate = function(criteria, listener) {
+            return function(e) {
+                var el = e.target;
+                do {
+                    if (!criteria(el)) continue;
+                    e.delegateTarget = el;
+                    listener.apply(this, arguments);
+                    return;
+                } while( (el = el.parentNode) );
+            };
+        };
+        requestbottom.on('click', delegate(expanderFilter, expanderHandler));
+
+    });
+</script>
+
+
+
+</body>
+</html>
